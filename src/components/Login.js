@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 
-const Login = ({ history }) => {
+const Login = () => {
   const [formData, setFormData] = useState({
-    username: '',
+    email: '',
     password: '',
   });
 
@@ -15,12 +14,27 @@ const Login = ({ history }) => {
     e.preventDefault();
 
     try {
-      const res = await axios.post('/login', formData);
-      console.log(res.data);
-      localStorage.setItem('token', res.data.token);
-      history.push('/blogs');
-    } catch (error) {
-      console.error(error.response.data);
+      const response = await fetch('https://tiny-elk-sunglasses.cyclic.cloud/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const responseData = await response.json();
+      console.log('Response:', response);
+      console.log('Response Data:', responseData);
+
+      if (response.ok) {
+        alert('Login successful!');
+      } else {
+        alert(`Login failed: ${responseData.error}`);
+      }
+    } 
+    catch (error) {
+      console.error('Login error:', error);
+      alert('Login failed. Please try again.');
     }
   };
 
@@ -28,14 +42,22 @@ const Login = ({ history }) => {
     <div>
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="username">Username:</label>
-          <input type="text" name="username" value={formData.username} onChange={handleChange} />
-        </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input type="password" name="password" value={formData.password} onChange={handleChange} />
-        </div>
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={formData.password}
+          onChange={handleChange}
+          required
+        />
         <button type="submit">Login</button>
       </form>
     </div>

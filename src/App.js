@@ -1,15 +1,14 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { Route, Link, Routes } from 'react-router-dom';
+import './App.css';
 import Signup from './components/Signup';
 import Login from './components/Login';
 import Blogs from './components/Blogs';
 import CreateBlog from './components/CreateBlog';
-import UpdateBlog from './components/UpdateBlog';
-import AuthRoute from './components/AuthRoute';
 
-const App = () => {
+function App() {
   return (
-    <Router>
+    <div className="App">
       <nav>
         <ul>
           <li>
@@ -21,17 +20,19 @@ const App = () => {
           <li>
             <Link to="/blogs">Blogs</Link>
           </li>
+          <li>
+            <Link to="/create">Create Blog</Link>
+          </li>
         </ul>
       </nav>
       <Routes>
-        <Route path="/signup" component={Signup} />
-        <Route path="/login" component={Login} />
-        <AuthRoute path="/blogs" component={Blogs} />
-        <AuthRoute path="/create" component={CreateBlog} />
-        <AuthRoute path="/update/:id" component={UpdateBlog} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/blogs" element={<Blogs />} />
+        <Route path="/create" element={<CreateBlog />} />
       </Routes>
-    </Router>
+    </div>
   );
-};
+}
 
 export default App;
